@@ -14,6 +14,10 @@ variable "vpc_id" {
     type = string
 }
 
+variable "subnet_id" {
+    type = string
+}
+
 variable "key_name" {
     type = string
 }
@@ -74,7 +78,7 @@ data "aws_ami" "amazon_linux" {
 }
 
 resource "aws_iam_role" "test_role" {
-  name = "test_role"
+  name = "test_role1"
 
   assume_role_policy = <<EOF
 {
@@ -94,12 +98,12 @@ EOF
 }
 
 resource "aws_iam_instance_profile" "test_profile" {
-  name = "test_profile"
+  name = "test_profile1"
   role = "${aws_iam_role.test_role.name}"
 }
 
 resource "aws_iam_role_policy" "test_policy" {
-  name = "test_policy"
+  name = "test_policy1"
   role = "${aws_iam_role.test_role.id}"
 
   policy = <<EOF
@@ -117,7 +121,7 @@ EOF
 }
 
 resource "aws_instance" "web" {
-  ami             = "ami-02f617729751b375a"
+  ami             = "ami-063d43db0594b521b"
   instance_type   = "t2.medium" 
   key_name        = var.key_name
   iam_instance_profile = "${aws_iam_instance_profile.test_profile.name}"
@@ -129,6 +133,7 @@ resource "aws_instance" "web" {
 root_block_device {
     volume_size = 30
     
-  }
+
 }
 
+}
